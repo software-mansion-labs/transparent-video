@@ -21,30 +21,42 @@ internal class GLTextureViewListener(
     requestRender.onEach { drawFrame() }.launchIn(scope)
   }
 
+  private fun getEglHandler(
+      surfaceTexture: SurfaceTexture,
+      width: Int,
+      height: Int
+  ): EGLHandler {
+    if (currentEGLHandler != null) return currentEGLHandler as EGLHandler
+    val eglHandler = EGLHandler(surfaceTexture = surfaceTexture).also { currentEGLHandler = it }
+    renderer.onSurfaceCreated(gl = eglHandler.gl, config = eglHandler.config)
+    renderer.onSurfaceChanged(gl = eglHandler.gl, width = width, height = height)
+    renderer.onDrawFrame(gl = eglHandler.gl)
+    return eglHandler
+  }
+
   override fun onSurfaceTextureAvailable(
     surfaceTexture: SurfaceTexture,
     width: Int,
     height: Int
   ) = openGLContext.execute {
-    if (currentEGLHandler != null) return@execute
-    val eglHandler = EGLHandler(surfaceTexture = surfaceTexture).also { currentEGLHandler = it }
-    renderer.onSurfaceCreated(gl = eglHandler.gl, config = eglHandler.config)
-    renderer.onSurfaceChanged(gl = eglHandler.gl, width = width, height = height)
-    renderer.onDrawFrame(gl = eglHandler.gl)
+    getEglHandler(surfaceTexture, width, height)
   }
 
   override fun onSurfaceTextureSizeChanged(
-    surface: SurfaceTexture,
+    surfaceTexture: SurfaceTexture,
     width: Int,
     height: Int
   ) = openGLContext.execute {
-    val eglHandler = currentEGLHandler
-      ?: throw IllegalStateException("Surface isn't created")
+    val eglHandler = getEglHandler(surfaceTexture, width, height)
     renderer.onSurfaceChanged(gl = eglHandler.gl, width = width, height = height)
   }
 
   override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
-    return false
+    val eglHandler = currentEGLHandler ?: return false
+    renderer.onSurfaceDestroyed()
+    eglHandler.destroy()
+    currentEGLHandler = null
+    return true
   }
 
   override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
