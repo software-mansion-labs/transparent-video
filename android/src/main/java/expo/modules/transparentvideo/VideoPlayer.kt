@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
@@ -117,6 +118,12 @@ class VideoPlayer(context: Context, appContext: AppContext, private val mediaIte
         }
       }
     }
+
+    override fun onPlayerError(error: PlaybackException) {
+      super.onPlayerError(error)
+      onErrorCallback?.invoke(mapOf("error" to error.message.toString())
+    }
+
 
     override fun onTimelineChanged(timeline: Timeline, reason: Int) {
       this@VideoPlayer.timeline = timeline
