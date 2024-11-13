@@ -121,7 +121,7 @@ class VideoPlayer(context: Context, appContext: AppContext, private val mediaIte
 
     override fun onPlayerError(error: PlaybackException) {
       super.onPlayerError(error)
-      onErrorCallback?.invoke(mapOf("error" to error.message.toString())
+      onErrorCallback?.invoke(mapOf("error" to error.message.toString()))
     }
 
 
