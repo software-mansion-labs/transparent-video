@@ -11,7 +11,7 @@ useDefaultAndroidSdkVersions()
 useExpoPublishing()
 
 android {
-  namespace "expo.modules.video"
+  namespace "expo.modules.transparentvideo"
   defaultConfig {
     versionCode 1
     versionName '0.2.3'
