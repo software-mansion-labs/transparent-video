@@ -28,10 +28,10 @@
     "test": "expo-module test"
   },
   "devDependencies": {
-    "expo": "~52.0.9",
-    "expo-module-scripts": "^3.5.0",
+    "expo": "~52.0.37",
+    "expo-module-scripts": "^4.0.4",
     "react": "*",
-    "react-native": "^0.76.1"
+    "react-native": "^0.76.7"
   },
   "peerDependencies": {
     "expo": "*",
