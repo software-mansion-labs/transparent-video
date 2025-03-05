@@ -1,5 +1,6 @@
 {
   "name": "expo-transparent-video",
+  "title": "Expo Transparent Video",
   "version": "0.3.1",
   "description": "An Android transparent video component for React Native and Expo.",
   "keywords": [
@@ -9,8 +10,10 @@
     "player",
     "transparent"
   ],
+  "author": "Kamil Owczarz <kamil.owczarz@swmansion.com>",
   "homepage": "https://github.com/software-mansion-labs/transparent-video",
-  "repository": "https://github.com/software-mansion-labs/transparent-video.git",
+  "repository": "https://github.com/software-mansion-labs/transparent-video",
+  "packageManager": "yarn@4.7.0",
   "license": "MIT",
   "sideEffects": false,
   "main": "build/index.js",
@@ -24,17 +27,15 @@
     "prepublishOnly": "expo-module prepublishOnly",
     "test": "expo-module test"
   },
-  "dependencies": {},
   "devDependencies": {
     "expo": "~52.0.9",
     "expo-module-scripts": "^3.5.0",
+    "react": "*",
     "react-native": "^0.76.1"
   },
   "peerDependencies": {
     "expo": "*",
     "react": "*",
     "react-native": "*"
-  },
-  "title": "Expo Transparent Video",
-  "author": "Kamil Owczarz <kamil.owczarz@swmansion.com>"
+  }
 }
