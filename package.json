@@ -22,14 +22,16 @@
     "build": "expo-module build",
     "clean": "expo-module clean",
     "expo-module": "expo-module",
-    "lint": "expo-module lint",
+    "lint": "expo-module lint example .eslintrc.js app.plugin.js babel.config.js",
     "prepare": "expo-module prepare",
     "prepublishOnly": "expo-module prepublishOnly"
   },
   "devDependencies": {
     "@types/react": "~18.3.12",
+    "eslint": "8.57.1",
     "expo": "~52.0.37",
     "expo-module-scripts": "^4.0.4",
+    "prettier": "3.5.3",
     "react": "18.3.1",
     "react-native": "^0.76.7"
   },

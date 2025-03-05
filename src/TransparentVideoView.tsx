@@ -1,18 +1,22 @@
-import {createRef, PureComponent, ReactNode, useMemo} from 'react';
+import { createRef, PureComponent, ReactNode, useMemo } from "react";
 
-import NativeTransparentVideoView from './NativeTransparentVideoView';
-import NativeVideoModule from './NativeVideoModule';
-import { TransparentVideoViewProps, VideoPlayer, VideoSource } from './VideoView.types';
+import NativeTransparentVideoView from "./NativeTransparentVideoView";
+import NativeVideoModule from "./NativeVideoModule";
+import {
+  TransparentVideoViewProps,
+  VideoPlayer,
+  VideoSource,
+} from "./VideoView.types";
 
-
-export function useVideoPlayer(source: VideoSource, enableDecoderFallback?: boolean): VideoPlayer {
+export function useVideoPlayer(
+  source: VideoSource,
+  enableDecoderFallback?: boolean,
+): VideoPlayer {
   return useMemo(() => {
-    if (typeof source === 'string') {
+    if (typeof source === "string") {
       return new NativeVideoModule.VideoPlayer(
-          {
-            uri: source,
-          },
-          enableDecoderFallback
+        { uri: source },
+        enableDecoderFallback,
       );
     }
     return new NativeVideoModule.VideoPlayer(source, enableDecoderFallback);
@@ -51,7 +55,7 @@ export class TransparentVideoView extends PureComponent<TransparentVideoViewProp
   nativeRef = createRef<any>();
 
   replace(source: VideoSource) {
-    if (typeof source === 'string') {
+    if (typeof source === "string") {
       this.nativeRef.current?.replace({ uri: source });
       return;
     }
@@ -62,7 +66,13 @@ export class TransparentVideoView extends PureComponent<TransparentVideoViewProp
     const { player, ...props } = this.props;
     const playerId = getPlayerId(player);
 
-    return <NativeTransparentVideoView {...props} player={playerId} ref={this.nativeRef} />;
+    return (
+      <NativeTransparentVideoView
+        {...props}
+        player={playerId}
+        ref={this.nativeRef}
+      />
+    );
   }
 }
 
@@ -74,7 +84,7 @@ function getPlayerId(player: number | VideoPlayer): number | null {
     // @ts-expect-error
     return player.__expo_shared_object_id__;
   }
-  if (typeof player === 'number') {
+  if (typeof player === "number") {
     return player;
   }
   return null;

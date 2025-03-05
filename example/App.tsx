@@ -1,16 +1,18 @@
-import { TransparentVideoView, useVideoPlayer } from 'expo-transparent-video';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import { TransparentVideoView, useVideoPlayer } from "expo-transparent-video";
+import { StyleSheet, SafeAreaView } from "react-native";
 
 export default function App() {
   /** Acknowledgement: video source coming from https://github.com/tritus/android_transparent_video */
-  const player = useVideoPlayer('https://github.com/tritus/android_transparent_video/raw/refs/heads/main/sample/src/main/res/raw-hdpi/thunder_loader.webm');
+  const player = useVideoPlayer(
+    "https://github.com/tritus/android_transparent_video/raw/refs/heads/main/sample/src/main/res/raw-hdpi/thunder_loader.webm",
+  );
 
   player.loop = true;
-  player.play()
+  player.play();
 
   return (
     <SafeAreaView style={styles.container}>
-      <TransparentVideoView style={styles.videoPlayer}  player={player} />
+      <TransparentVideoView style={styles.videoPlayer} player={player} />
     </SafeAreaView>
   );
 }
@@ -18,14 +20,14 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
 
-    backgroundColor: '#eee',
+    backgroundColor: "#eee",
   },
 
   videoPlayer: {
     width: 250,
     height: 250,
-  }
-})
+  },
+});
