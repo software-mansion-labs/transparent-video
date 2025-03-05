@@ -1,1 +1,1 @@
-module.exports = require('./plugin/build/withExpoVideo');
+module.exports = require("./plugin/build/withExpoVideo");
