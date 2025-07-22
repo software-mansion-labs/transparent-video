@@ -14,6 +14,8 @@ import expo.modules.transparentvideo.glTexture.GLTextureViewListener
 import expo.modules.transparentvideo.renderer.TransparentVideoRenderer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -42,7 +44,7 @@ class TransparentVideoView(context: Context, appContext: AppContext) : ExpoView(
   var videoAspectRatio: Float? = null
 
   private lateinit var mediaPlayerSurface: Surface
-  private val coroutineScope = CoroutineScope(Dispatchers.Main)
+  private var coroutineScope: CoroutineScope? = null
   private val onFrameAvailable = MutableSharedFlow<Unit>(extraBufferCapacity = Channel.UNLIMITED)
   private val renderer = TransparentVideoRenderer(onSurfaceTextureCreated = { surface -> onSurfaceTextureCreated(surface) })
   private val textureView = object : TextureView(context) {
@@ -74,12 +76,7 @@ class TransparentVideoView(context: Context, appContext: AppContext) : ExpoView(
             MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY))
       }
     }
-  }.also {
-    onSurfaceTextureCreated(it.surfaceTexture ?: return@also)
-  }.apply {
-    surfaceTextureListener = GLTextureViewListener(coroutineScope, renderer, onFrameAvailable)
-    isOpaque = false
-  }
+  }.apply { isOpaque = false }
 
   init {
     clipToOutline = true
@@ -88,11 +85,31 @@ class TransparentVideoView(context: Context, appContext: AppContext) : ExpoView(
     addView(textureView)
   }
 
+  override fun onAttachedToWindow() {
+    super.onAttachedToWindow()
+    val scope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
+    coroutineScope = scope
+    with(textureView) {
+      surfaceTextureListener = GLTextureViewListener(scope, renderer, onFrameAvailable)
+      if (isAvailable) {
+        val texture = surfaceTexture ?: return
+        surfaceTextureListener?.onSurfaceTextureAvailable(texture, width, height)
+      }
+    }
+  }
+
+  override fun onDetachedFromWindow() {
+    super.onDetachedFromWindow()
+    (textureView.surfaceTextureListener as GLTextureViewListener).onDetach()
+    textureView.surfaceTextureListener = null
+    coroutineScope?.cancel()
+    coroutineScope = null
+  }
 
   private fun onSurfaceTextureCreated(surfaceTexture: SurfaceTexture) {
     surfaceTexture.setOnFrameAvailableListener { onFrameAvailable.tryEmit(Unit) }
     val surface = Surface(surfaceTexture).also { mediaPlayerSurface = it }
-    coroutineScope.launch {
+    coroutineScope?.launch {
       videoPlayer?.player?.setVideoSurface(surface)
       videoPlayer?.onEndCallback = onEnd
       videoPlayer?.onErrorCallback = onError
