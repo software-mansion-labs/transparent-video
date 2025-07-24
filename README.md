@@ -2,6 +2,11 @@
 
 `expo-transparent-video` provides support for performant transparent video, on Android, for React Native and Expo.
 
+<video autoplay playsinline controls>
+  <source src="https://github.com/user-attachments/assets/c779d542-b55d-46cb-92ff-a9a367f77452" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## Installation
 
 1. Install the package
@@ -42,8 +47,8 @@ import { TransparentVideoView, useVideoPlayer } from 'expo-transparent-video';
 export const VideoPlayer = () => {
   const player = useVideoPlayer('https://cdn.example.com/video.webm');
 
-  player.paused = false;
-  player.repeat = true;
+  player.loop = true;
+  player.play();
 
   return (
     <TransparentVideoView player={player} />
