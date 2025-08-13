@@ -1,7 +1,7 @@
 {
   "name": "expo-transparent-video",
   "title": "Expo Transparent Video",
-  "version": "0.3.4-alpha.1",
+  "version": "0.3.4",
   "description": "An Android transparent video component for React Native and Expo.",
   "keywords": [
     "react-native",
