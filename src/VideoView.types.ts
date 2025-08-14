@@ -1,4 +1,4 @@
-import { ViewProps } from 'react-native';
+import { ViewProps } from "react-native";
 
 /**
  * A class that represents an instance of the video player.
@@ -96,19 +96,18 @@ export declare class VideoPlayer {
   deallocate(): void;
 }
 
-
 interface NativeErrorEvent {
   nativeEvent: {
-    error: string
-  }
+    error: string;
+  };
 }
 
 interface NativeOnProgressEvent {
   nativeEvent: {
-    currentTime: number,
-    playableDuration: number,
-    seekableDuration: number,
-  }
+    currentTime: number;
+    playableDuration: number;
+    seekableDuration: number;
+  };
 }
 
 export interface TransparentVideoViewProps extends ViewProps {
@@ -135,7 +134,7 @@ export interface TransparentVideoViewProps extends ViewProps {
 /**
  * Specifies which type of DRM to use. Android supports Widevine, PlayReady and ClearKey, iOS supports FairPlay.
  * */
-type DRMType = 'clearkey' | 'fairplay' | 'playready' | 'widevine';
+type DRMType = "clearkey" | "fairplay" | "playready" | "widevine";
 
 /**
  * Specifies DRM options which will be used by the player while loading the video.
